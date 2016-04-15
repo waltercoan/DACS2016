@@ -11,6 +11,8 @@ import model.Produto;
 
 import org.primefaces.context.RequestContext;
 
+import dao.DAOFactory;
+
 @ManagedBean(name="ctrProduto")
 @ViewScoped
 public class CtrProduto {
@@ -18,21 +20,25 @@ public class CtrProduto {
 	
 	@PostConstruct
 	public void init(){
+		/*
+		//DAOFactory.getInstance();
 		Produto p = new Produto();
 		p.setDescricao("Pão");
 		p.setUnidade("unidade");
 		p.setValor(0.20f);
 		
-		colProdutos.add(p);
+		DAOFactory.getInstance().getProdutoDAO().insert(p);
 	
 		p = new Produto();
 		p.setDescricao("Pão");
 		p.setUnidade("unidade");
 		p.setValor(0.20f);
 		
-		colProdutos.add(p);
-		
-		
+		DAOFactory.getInstance().getProdutoDAO().insert(p);
+		*/
+		colProdutos = 
+				DAOFactory.getInstance().getProdutoDAO().getAll();
+
 		RequestContext reqcontext = RequestContext.getCurrentInstance();
 		reqcontext.update("listaProdutos");
 		
