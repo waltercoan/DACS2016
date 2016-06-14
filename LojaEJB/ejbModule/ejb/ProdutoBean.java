@@ -1,11 +1,11 @@
 package ejb;
 
-import javax.ejb.Local;
-import javax.ejb.LocalBean;
-import javax.ejb.Remote;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import model.Produto;
 
@@ -13,7 +13,7 @@ import model.Produto;
  * Session Bean implementation class ProdutoBean
  */
 @Stateless
-public class ProdutoBean implements ProdutoBeanRemote{
+public class ProdutoBean implements ProdutoBeanRemote,ProdutoBeanLocal{
 
 	@PersistenceContext(name="dacs2016context")
 	private EntityManager em;
@@ -32,15 +32,25 @@ public class ProdutoBean implements ProdutoBeanRemote{
     	}
     	System.out.println(produto);
     }
-    
-    public void logData(){
-    	System.out.println(produto);
-    }
 	@Override
-	public Produto getProduto() {
-		return produto;
+	public void remove(Produto produto) {
+		produto = em.find(Produto.class, produto.getOid());
+		if(produto != null){
+			em.remove(produto);
+		}
 	}
-
+	@Override
+	public List<Produto> getAllProducts() {
+		Query q = em.createNamedQuery("getAllProducts");
+		return q.getResultList();
+	}
+	@Override
+	public List<Produto> getProductsByDesc(String desc) {
+		Query q = em.createNamedQuery("getProductsByDesc");
+		q.setParameter("desc", desc);
+		q.setMaxResults(10);
+		return q.getResultList();
+	}
 }
 
 

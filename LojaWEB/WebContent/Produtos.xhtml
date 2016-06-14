@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta charset="UTF-8" />
+		<title>Index</title>
+	</h:head>
+	<body>
+		<h:form id="formTable">
+			<p:panel header="Lista de Produtos">
+				<p:dataTable value="#{produtoAction.getProductsList()}"
+					var="umProduto" selectionMode="single"
+					selection="#{produtoAction.model}" rowKey="#{umProduto.oid}">
+	
+					<p:column headerText="Código">
+						<h:outputText value="#{umProduto.oid}" />
+					</p:column>
+					<p:column headerText="Descrição">
+						<h:outputText value="#{umProduto.descricao}" />
+					</p:column>
+					<p:column headerText="Preço">
+						<h:outputText value="#{umProduto.preco}" />
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton value="Incluir"
+							id="cbIncluir" 
+							update=":form:formDetail"
+							icon="ui-icon-extlink" 
+							action="#{produtoAction.createNewProduct()}"
+							oncomplete="PF('dlg1').show()"/>
+						
+						<p:commandButton value="Editar"
+							id="cbEditar" 
+							update=":form:formDetail"
+							icon="ui-icon-extlink" 
+							oncomplete="PF('dlg1').show()"/>
+							
+						<p:commandButton value="Remover"
+							id="cbRemover" 
+							update=":form:formDetail"
+							icon="ui-icon-extlink" 
+							oncomplete="PF('dlgRemove').show()"/>	
+						
+					</f:facet>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		<h:form id="form">
+			<p:dialog width="500" height="300"
+					id="detailDialog" modal="true"
+					header="Detalhe do Produto" 
+					widgetVar="dlg1">
+				<h:panelGrid id="formDetail" 
+							columns="2">
+							
+					<h:outputLabel name="lblCodigo"
+						value="Código:"/>
+					<h:outputLabel id="txtCodigo"
+						value="#{produtoAction.model.oid}"/>
+						
+					<h:outputLabel name="lblDescricao"
+						value="Descrição:"/>
+					<p:inputTextarea id="txtDescricao"
+						rows="5" cols="30"
+						value="#{produtoAction.model.descricao}"/>	
+					
+					<h:outputLabel name="lblPreco"
+						value="Preço:"/>
+					<p:inputText id="txtPreco"
+						value="#{produtoAction.model.preco}"/>	
+					
+					<p:commandButton value="OK"
+						onsuccess="PF('dlg1').hide()" 
+						update=":formTable"
+						action="#{produtoAction.saveProduct()}"
+						id="cbOK"/>
+					
+					<p:commandButton value="Cancelar"
+						update=":formTable"
+						onsuccess="PF('dlg1').hide()" 
+						id="cbCancelar"/>
+				
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		
+		<h:form id="formRemove">
+			<p:dialog width="500" height="50" id="removeDialog"
+				modal="true" header="Confirma exclusão?"
+				widgetVar="dlgRemove">
+				<h:panelGrid columns="2">
+					<p:commandButton value="Sim"
+						action="#{produtoAction.removeProduct()}"
+						update=":formTable" 
+						onsuccess="PF('dlgRemove').hide()" />
+						
+					<p:commandButton value="Não"
+						update=":formTable" 
+						onsuccess="PF('dlgRemove').hide()" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+

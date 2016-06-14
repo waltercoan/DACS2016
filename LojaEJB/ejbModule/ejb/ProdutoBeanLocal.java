@@ -1,13 +1,11 @@
 package ejb;
 
 import java.util.List;
-
-import javax.ejb.Remote;
-
+import javax.ejb.Local;
 import model.Produto;
 
-@Remote
-public interface ProdutoBeanRemote {
+@Local
+public interface ProdutoBeanLocal {
 	public void save(Produto produto);
 	public void remove(Produto produto);
 	public List<Produto> getAllProducts();
