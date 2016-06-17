@@ -40,6 +40,13 @@ public class ProdutoBean implements ProdutoBeanRemote,ProdutoBeanLocal{
 		}
 	}
 	@Override
+	public void remove(int oid) {
+		Produto produto = em.find(Produto.class, oid);
+		if(produto != null){
+			em.remove(produto);
+		}
+	}
+	@Override
 	public List<Produto> getAllProducts() {
 		Query q = em.createNamedQuery("getAllProducts");
 		return q.getResultList();

@@ -10,4 +10,5 @@ public interface ProdutoBeanLocal {
 	public void remove(Produto produto);
 	public List<Produto> getAllProducts();
 	public List<Produto> getProductsByDesc(String desc);
+	public void remove(int oid);
 }
