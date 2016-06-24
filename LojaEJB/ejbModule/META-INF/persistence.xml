@@ -5,10 +5,7 @@
     	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/lojadacs2016</jta-data-source>
         <properties>
-            <!--  re cria as tabelas a cada deploy -->
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
-            <!--  re cria todo o banco a cada deploy -->
-            <!--  <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
 			<property name="eclipselink.ddl-generation.output-mode" value="both" />
         </properties>      
     </persistence-unit>

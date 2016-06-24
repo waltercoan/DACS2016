@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta charset="UTF-8" />
+		<title>Pedido</title>
+	</h:head>
+	<body>
+		<p:layout fullPage="true">
+		    <p:layoutUnit position="north">
+		    	<h:form id="formNorth">
+			        <p:commandButton value="Carrinho"
+								id="cbCompras" 
+								icon="ui-icon-extlink"
+								update=":formBasket"
+								oncomplete="PF('basketDialog').show()"/>
+				</h:form>
+		    </p:layoutUnit>
+		 
+		    <p:layoutUnit position="center">
+		        <h:form id="form">
+		        	<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />	
+				    <p:dataGrid var="product" value="#{pedidoAction.getProductsList()}" columns="3" layout="grid"
+				        rows="12" paginator="true" id="products"
+				        paginatorTemplate="{PreviousPageLink} {PageLinks} {NextPageLink}"
+				        rowsPerPageTemplate="6,12,16">
+				 
+				        <f:facet name="header">
+				            Produtos a venda
+				        </f:facet>
+				 
+				        <p:panel header="#{product.oid}" style="text-align:center">
+				            <h:panelGrid columns="1" style="width:100%">
+				                <h:outputText value="#{product.descricao}" />
+				                <h:outputText value="#{product.preco}" />
+				 
+				                <p:commandLink title="Comprar"  action="#{pedidoAction.addBasket}">
+				                    <h:outputText styleClass="ui-icon ui-icon-cart" style="margin:0 auto;" />
+				                    <f:setPropertyActionListener value="#{product}" target="#{pedidoAction.productSelect}" />
+				                </p:commandLink>
+				            </h:panelGrid>
+				        </p:panel>
+				 
+				    </p:dataGrid>
+				 </h:form>
+		    </p:layoutUnit>
+		</p:layout>
+	</body>
+	
+	<p:dialog header="Carrinho de compras" widgetVar="basketDialog" 
+			modal="true" showEffect="fade" hideEffect="fade" 
+			resizable="false" width="500" height="700">
+		<h:form id="formBasket">
+        <p:tabView dynamic="true" activeIndex="#{pedidoAction.tabnum}">
+	        <p:tab title="Confirmar Itens">
+	            <p:dataTable value="#{pedidoAction.basketList}"
+				var="umProduto" selectionMode="single"
+				selection="#{pedidoAction.productSelect}" rowKey="#{umProduto.oid}">
+
+				<p:column headerText="Código">
+					<h:outputText value="#{umProduto.oid}" />
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{umProduto.descricao}" />
+				</p:column>
+				<p:column headerText="Preço">
+					<h:outputText value="#{umProduto.preco}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton value="Remover Item"
+						id="cbRemover" 
+						update=":formBasket"
+						icon="ui-icon-extlink" 
+						action="#{pedidoAction.removeItem()}"
+						/>
+					<p:commandButton value="Confirmar Pedido"
+						id="cbIncluir" 
+						update=":formBasket"
+						icon="ui-icon-extlink"
+						action="#{pedidoAction.confirmOrder()}" />
+					
+					
+				</f:facet>
+			</p:dataTable>
+	        </p:tab>
+	        <p:tab title="Concluir a compra">
+	            <h:panelGrid columns="2">
+	            	<h:outputLabel name="lblNome"
+						value="Nome:"/>
+					<p:inputText id="txtNome"
+						value=""/>	
+	            	<h:outputLabel name="lblEmail"
+						value="E-mail:"/>
+					<p:inputText id="txtEmail"
+						value=""/>	
+					
+					<h:outputLabel name="lblEndereco"
+						value="Endereço:"/>
+					<p:inputTextarea id="txtEndereco"
+						value=""/>	
+						
+	            	<h:outputLabel name="lblTotal"
+						value="Total:"/>
+					<p:outputLabel id="txtTotal"
+						value="R$ 0,00"/>	
+					<p:commandButton value="Realizar Pedido"
+						id="cbDoOrder" 
+						update=":formBasket"
+						icon="ui-icon-extlink"
+						oncomplete="PF('basketDialog').hide()"	/>	
+					
+	            </h:panelGrid>
+	        </p:tab>
+	    </p:tabView>
+	    </h:form>
+   	</p:dialog>
+	
+</html>
+
+
+
+
+
+
+
+
+
+

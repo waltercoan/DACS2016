@@ -60,8 +60,8 @@ public class Desktop extends JFrame implements ActionListener{
 				if(comp.getName().equals("btn3")){
 					System.out.println("LOG");
 					
-					Produto umProduto = produtoBean.getProduto();
-					JOptionPane.showMessageDialog(this, umProduto);
+					//Produto umProduto = produtoBean.getProduto();
+					//JOptionPane.showMessageDialog(this, umProduto);
 					
 					
 				}
