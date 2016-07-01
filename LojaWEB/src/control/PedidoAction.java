@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import model.ItemPedido;
+import model.Pedido;
 import model.Produto;
 import ejb.ProdutoBeanRemote;
 
@@ -18,23 +20,23 @@ import ejb.ProdutoBeanRemote;
 public class PedidoAction {
 	@EJB
 	private ProdutoBeanRemote produtoBean;
-	private Produto productSelect;
-	private List<Produto> basketList;
+	private ItemPedido itemSelect;
+	//private List<Produto> basketList;
 	private int tabnum;
+	private Pedido pedido;
+	private Produto productSelect;
 	
-	public List<Produto> getBasketList() {
-		return basketList;
+	public Pedido getPedido() {
+		return pedido;
 	}
 
-
-	public void setBasketList(List<Produto> basketList) {
-		this.basketList = basketList;
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
-
 
 	@PostConstruct
 	public void startBasket(){
-		basketList = new ArrayList<Produto>();
+		pedido = new Pedido();
 	}
 	
 	public void confirmOrder(){
@@ -42,12 +44,22 @@ public class PedidoAction {
 	}
 	
 	public void removeItem(){
-		basketList.remove(productSelect);
+		//basketList.remove(productSelect);
+		pedido.getColItens().remove(itemSelect);
+		
 	}
 	public void addBasket(){
 		if(productSelect != null){
-			basketList.add(productSelect);
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", String.format("Produto %s incluso no carrinho de compras", productSelect.getDescricao())));
+			ItemPedido novoItem = new ItemPedido();
+			novoItem.setMeuProduto(productSelect);
+			pedido.getColItens().add(novoItem);
+			
+			FacesContext.getCurrentInstance().
+			addMessage(null, new FacesMessage(
+			FacesMessage.SEVERITY_INFO, "Info", 
+			String.format("Produto %s incluso no carrinho "
+				+ "de compras", 
+				itemSelect.getMeuProduto().getDescricao())));
 		}
 	}
 	
@@ -55,14 +67,13 @@ public class PedidoAction {
 		return produtoBean.getAllProducts();
 	}
 
-	public Produto getProductSelect() {
-		return productSelect;
+	public ItemPedido getItemSelect() {
+		return itemSelect;
 	}
 
-	public void setProductSelect(Produto productSelect) {
-		this.productSelect = productSelect;
+	public void setItemSelect(ItemPedido itemSelect) {
+		this.itemSelect = itemSelect;
 	}
-
 
 	public int getTabnum() {
 		return tabnum;
@@ -71,5 +82,13 @@ public class PedidoAction {
 
 	public void setTabnum(int tabnum) {
 		this.tabnum = tabnum;
+	}
+
+	public Produto getProductSelect() {
+		return productSelect;
+	}
+
+	public void setProductSelect(Produto productSelect) {
+		this.productSelect = productSelect;
 	}
 }

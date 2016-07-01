@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_05"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LojaEJB"/>
 	<classpathentry kind="lib" path="F:/glassfish4/glassfish/lib/gf-client.jar"/>
+	<classpathentry kind="lib" path="F:/glassfish4/glassfish/lib/install/applications/jmsra/imqjmsra.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

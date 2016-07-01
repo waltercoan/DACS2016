@@ -23,10 +23,10 @@ public class ChatJMS implements MessageListener{
 			Properties props = new Properties();
 
 	        props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-	        props.put(Context.PROVIDER_URL, "iiop://192.168.185.32:7676");
+	        props.put(Context.PROVIDER_URL, "iiop://localhost:7676");
 	        //props.put("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
 	        //props.put("java.naming.factory.state", "com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl");
-			props.setProperty("org.omg.CORBA.ORBInitialHost", "192.168.185.32");
+			props.setProperty("org.omg.CORBA.ORBInitialHost", "localhost");
 	        props.setProperty("org.omg.CORBA.ORBInitialPort", "3700");
 	         
 			
