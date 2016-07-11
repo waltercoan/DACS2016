@@ -1,23 +1,38 @@
 package control;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
+import javax.jms.Queue;
 
 import model.ItemPedido;
 import model.Pedido;
 import model.Produto;
 import ejb.ProdutoBeanRemote;
 
+
+
+
 @ManagedBean(name="pedidoAction")
 @ViewScoped
 public class PedidoAction {
+	
+	
+	@Resource(lookup = "java:comp/DefaultJMSConnectionFactory")
+	private ConnectionFactory connectionFactory;
+
+	@Resource(lookup = "orderqueue")
+	private Queue queue;
+	
 	@EJB
 	private ProdutoBeanRemote produtoBean;
 	private ItemPedido itemSelect;
@@ -25,6 +40,8 @@ public class PedidoAction {
 	private int tabnum;
 	private Pedido pedido;
 	private Produto productSelect;
+	
+	
 	
 	public Pedido getPedido() {
 		return pedido;
@@ -41,6 +58,11 @@ public class PedidoAction {
 	
 	public void confirmOrder(){
 		tabnum = 1;
+	}
+	public void doOrder(){
+		JMSContext jmsContext = connectionFactory.createContext();
+		JMSProducer jmsProducer = jmsContext.createProducer();
+		jmsProducer.send(queue, pedido);
 	}
 	
 	public void removeItem(){
@@ -59,7 +81,7 @@ public class PedidoAction {
 			FacesMessage.SEVERITY_INFO, "Info", 
 			String.format("Produto %s incluso no carrinho "
 				+ "de compras", 
-				itemSelect.getMeuProduto().getDescricao())));
+				novoItem.getMeuProduto().getDescricao())));
 		}
 	}
 	

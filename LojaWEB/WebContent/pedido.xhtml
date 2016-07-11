@@ -56,19 +56,25 @@
 		<h:form id="formBasket">
         <p:tabView dynamic="true" activeIndex="#{pedidoAction.tabnum}">
 	        <p:tab title="Confirmar Itens">
-	            <p:dataTable value="#{pedidoAction.basketList}"
-				var="umProduto" selectionMode="single"
-				selection="#{pedidoAction.productSelect}" rowKey="#{umProduto.oid}">
+	            <p:dataTable value="#{pedidoAction.pedido.colItens}"
+				var="umItem" selectionMode="single"
+				selection="#{pedidoAction.itemSelect}" 
+				rowKey="#{umItem.oid}">
 
 				<p:column headerText="Código">
-					<h:outputText value="#{umProduto.oid}" />
+					<h:outputText value="#{umItem.meuProduto.oid}" />
 				</p:column>
 				<p:column headerText="Descrição">
-					<h:outputText value="#{umProduto.descricao}" />
+					<h:outputText value="#{umItem.meuProduto.descricao}" />
 				</p:column>
 				<p:column headerText="Preço">
-					<h:outputText value="#{umProduto.preco}" />
+					<h:outputText value="#{umItem.meuProduto.preco}" />
 				</p:column>
+				
+				<p:column headerText="Qtd">
+					<h:inputText value="#{umItem.quantidade}" />
+				</p:column>
+				
 				<f:facet name="footer">
 					<p:commandButton value="Remover Item"
 						id="cbRemover" 
@@ -91,16 +97,16 @@
 	            	<h:outputLabel name="lblNome"
 						value="Nome:"/>
 					<p:inputText id="txtNome"
-						value=""/>	
+						value="#{pedidoAction.pedido.meuCliente.nome}"/>	
 	            	<h:outputLabel name="lblEmail"
 						value="E-mail:"/>
 					<p:inputText id="txtEmail"
-						value=""/>	
+						value="#{pedidoAction.pedido.meuCliente.email}"/>	
 					
 					<h:outputLabel name="lblEndereco"
 						value="Endereço:"/>
 					<p:inputTextarea id="txtEndereco"
-						value=""/>	
+						value="#{pedidoAction.pedido.meuCliente.endereco}"/>	
 						
 	            	<h:outputLabel name="lblTotal"
 						value="Total:"/>
@@ -110,7 +116,8 @@
 						id="cbDoOrder" 
 						update=":formBasket"
 						icon="ui-icon-extlink"
-						oncomplete="PF('basketDialog').hide()"	/>	
+						oncomplete="PF('basketDialog').hide()"
+						action="#{pedidoAction.doOrder()}"	/>	
 					
 	            </h:panelGrid>
 	        </p:tab>

@@ -21,7 +21,7 @@ public class Pedido implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long oid;
 	@ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})
-	private Cliente meuCliente;
+	private Cliente meuCliente = new Cliente();
 	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date data;
 	private float valorTotal;

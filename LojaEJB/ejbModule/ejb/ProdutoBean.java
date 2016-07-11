@@ -2,7 +2,10 @@ package ejb;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,6 +20,7 @@ public class ProdutoBean implements ProdutoBeanRemote,ProdutoBeanLocal{
 
 	@PersistenceContext(name="dacs2016context")
 	private EntityManager em;
+	
 	
 	
     //private Produto produto;
